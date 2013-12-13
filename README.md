@@ -69,6 +69,34 @@ Successful responces always returns JSON data in the following format:
 }
 ```
 
+For multiple resources the response would be:
+
+```JSON
+{
+  "status" : "success",
+  "data" : [
+    {
+      "_id" : 1,
+      "name" : "Gert Jørgensen",
+      "title" : "Developer",
+      "meta" : {
+        "url" : "https://shape.dk/api/v1/employees/1"
+      }
+    },
+    {
+      "_id" : 2,
+      "name" : "Philip Bruce",
+      "title" : "Partner",
+      "meta" : {
+        "url" : "https://shape.dk/api/v1/employees/2"
+      }
+    }
+  ],
+  "meta" : {
+    "url" : "https://shape.dk/api/v1/employees"
+  }
+}
+
 ## Errors
 
 TODO.
