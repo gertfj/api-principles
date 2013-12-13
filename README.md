@@ -159,7 +159,51 @@ Timestamps are always saved and returned in UTC (GMT/Zulu)-time.
 
 ### Images
 
-TODO.
+Images are returned as an "image" entity including a "normal" and a "retina" version:
+
+```JSON
+{
+  "status" : "success",
+  "data" : {
+    "_id" : 1,
+    "name" : "Gert Jørgensen",
+    "title" : "Developer",
+    "image" : {
+      "normal" : "https://shape.dk/images/employees/gert.jpg",
+      "normal" : "https://shape.dk/images/employees/gert@2x.jpg"
+    }
+  },
+  "meta" : {
+    "url" : "https://shape.dk/api/v1/employees/1"
+  }
+}
+```
+
+For multiple images the response would be:
+
+```JSON
+{
+  "status" : "success",
+  "data" : {
+    "_id" : 1,
+    "name" : "Gert Jørgensen",
+    "title" : "Developer",
+    "images" : [
+      {
+        "normal" : "https://shape.dk/images/employees/gert.jpg",
+        "normal" : "https://shape.dk/images/employees/gert@2x.jpg"
+      },
+      {
+        "normal" : "https://shape.dk/images/employees/gert_alternative_.jpg",
+        "normal" : "https://shape.dk/images/employees/gert_alternative_@2x.jpg"
+      }
+    ]
+  },
+  "meta" : {
+    "url" : "https://shape.dk/api/v1/employees/1"
+  }
+}
+```
 
 ## File uploads
 
