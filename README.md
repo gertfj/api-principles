@@ -3,6 +3,7 @@
 * [Overview](#overview)
 * [Parameters](#parameters)
 * [HTTP verbs](#http-verbs)
+* [Successful responses](#successful-responses)
 * [Errors](#errors)
 * [Status codes](#status-codes)
     * [200 ok](#200-ok)
@@ -36,7 +37,7 @@ curl -i "https://shape.dk/api/v1/employees?title=developer"
 For POST, PATCH, and DELETE requests, parameters not included in the URL should be encoded as JSON with a Content-Type of ‘application/json’:
 
 ```
-curl -X POST -H "Content-Type: application/json" -d '{"name":"Gert Jørgensen","title":"developer"}' http://shape.dk/api/v1/employees
+curl -X POST -H "Content-Type: application/json" -d '{"name":"Gert Jørgensen","title":"developer"}' https://shape.dk/api/v1/employees
 ```
 
 ## HTTP verbs
@@ -49,6 +50,24 @@ GET | Used for retrieving resources.
 POST | Used for creating resources.
 PATCH | Used for updating resources with partial JSON data. For instance, an Issue resource has title and body attributes. A PATCH request may accept one or more of the attributes to update the resource.
 DELETE | Used for deleting resources.
+
+## Successful responses
+
+Successful responces always returns JSON data in the following format:
+
+```JSON
+{
+  "status" : "success",
+  "data" : {
+    "_id" : 1,
+    "name" : "Gert Jørgensen",
+    "title" : "Developer"
+  },
+  "meta" : {
+    "url" : "https://shape.dk/api/v1/employees/1"
+  }
+}
+```
 
 ## Errors
 
