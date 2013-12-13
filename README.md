@@ -19,7 +19,6 @@
 * [Attachments](#attachments)
     * [Images](#images)
 * [File uploads](#file-uploads)
-* [Meta](#meta)
 * [Pagination](#pagination)
 
 ## Overview
@@ -163,10 +162,6 @@ Timestamps are always saved and returned in UTC (GMT/Zulu)-time.
 TODO.
 
 ## File uploads
-
-TODO.
-
-## Meta
 
 TODO.
 
