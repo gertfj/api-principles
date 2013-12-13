@@ -142,7 +142,19 @@ TODO.
 
 ## Date and time
 
-TODO.
+All timestamps are returned in ISO 8601 format:
+
+```
+YYYY-MM-DDTHH:MM:SSZ
+```
+
+and time-only (without date):
+
+```
+THH:MM:SSZ
+```
+
+Timestamps are always saved and returned in UTC (GMT/Zulu)-time.
 
 ## Attachments
 
