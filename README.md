@@ -52,7 +52,7 @@ DELETE | Used for deleting resources.
 
 ## Successful responses
 
-Successful responces always returns JSON data in the following format:
+Successful responses always returns JSON data in the following format:
 
 ```JSON
 {
@@ -99,7 +99,18 @@ For multiple resources the response would be:
 
 ## Errors
 
-TODO.
+Unsuccessful responses always returns JSON data in the following format:
+
+```JSON
+{
+  "status" : "error",
+  "data" : {
+    "error_code" : "unauthorized",
+    "message" : "Unauthorized"
+  }
+}
+```
+The possible error codes and their HTTP status are shown in the section: [Status codes](#status-codes).
 
 ## Status codes
 
@@ -119,21 +130,77 @@ Returned for successful PATCH and DELETE requests that update or delete entities
 
 Returned for unsuccessful POST and PATCH requests if mandatory parameters are missing.
 
+Example:
+
+```JSON
+{
+  "status" : "error",
+  "data" : {
+    "error_code" : "param_missing",
+    "message" : "param not found: name"
+  }
+}
+```
+
 ### 401 unauthorized
 
 Returned for any request with an invalid authentication token.
+
+Example:
+
+```JSON
+{
+  "status" : "error",
+  "data" : {
+    "error_code" : "unauthorized",
+    "message" : "Unauthorized"
+  }
+}
+```
 
 ### 403 forbidden
 
 Returned for any request that the user don't have permissions for.
 
+Example:
+
+```JSON
+{
+  "status" : "error",
+  "data" : {
+    "error_code" : "forbidden",
+    "message" : "User doesn't have rights to create employees"
+  }
+}
+```
+
 ### 404 not_found
 
 Returned for any request for which the entities was not found in the database.
 
+```JSON
+{
+  "status" : "error",
+  "data" : {
+    "error_code" : "not_found",
+    "message" : "Not found"
+  }
+}
+```
+
 ### 500 exception
 
 Returned for any request for which the server encountered an unknown error.
+
+```JSON
+{
+  "status" : "error",
+  "data" : {
+    "error_code" : "exception",
+    "message" : "The server encountered an unknown error"
+  }
+}
+```
 
 ## Authentication
 
