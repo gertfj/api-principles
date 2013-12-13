@@ -27,7 +27,17 @@ TODO.
 
 ## Parameters
 
-TODO.
+Many API methods take optional parameters. For GET requests, any parameters not specified as a segment in the path can be passed as an HTTP query string parameter:
+
+```
+curl -i "https://shape.dk/api/v1/employees?title=developer"
+```
+
+For POST, PATCH, and DELETE requests, parameters not included in the URL should be encoded as JSON with a Content-Type of ‘application/json’:
+
+```
+curl -X POST -H "Content-Type: application/json" -d '{"name":"Gert Jørgensen","title":"developer"}' http://shape.dk/api/v1/employees
+```
 
 ## HTTP verbs
 
