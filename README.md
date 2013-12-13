@@ -96,6 +96,7 @@ For multiple resources the response would be:
     "url" : "https://shape.dk/api/v1/employees"
   }
 }
+```
 
 ## Errors
 
