@@ -31,7 +31,14 @@ TODO.
 
 ## HTTP verbs
 
-TODO.
+Where possible our API's strives to use appropriate HTTP verbs for each action.
+
+Verb | Description
+--- | ---
+GET | Used for retrieving resources.
+POST | Used for creating resources.
+PATCH | Used for updating resources with partial JSON data. For instance, an Issue resource has title and body attributes. A PATCH request may accept one or more of the attributes to update the resource.
+DELETE | Used for deleting resources.
 
 ## Errors
 
