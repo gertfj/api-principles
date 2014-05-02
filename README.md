@@ -79,34 +79,58 @@ Returns status: 401 Unauthorized
 
 #### Insufficient user rights
 
-Returns status: XXXXX
+Returns status: 403 Forbidden
 
 ```JSON
-{}
+{
+  "status": "error",
+  "data": {
+    "message": "Forbidden",
+    "error_code": "forbidden"
+  }
+}
 ```
 
 #### Not found
 
-Returns status: XXXXX
+Returns status: 404 Not Found
 
 ```JSON
-{}
+{
+  "status": "error",
+  "data": {
+    "message": "Not Found",
+    "error_code": "not_found"
+  }
+}
 ```
 
 #### Bad Request
 
-Returns status: XXXXX
+Returns status: 400 Bad Request
 
 ```JSON
-{}
+{
+  "status": "error",
+  "data": {
+    "message": "Not specified",
+    "error_code": "not_specified"
+  }
+}
 ```
 
 #### Internal Server Error
 
-Returns status: XXXXX
+Returns status: 500 Internal Server Error
 
 ```JSON
-{}
+{
+  "status": "error",
+  "data": {
+    "message": "Internal Server Error",
+    "error_code": "exception"
+  }
+}
 ```
 
 
