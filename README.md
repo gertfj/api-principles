@@ -1,15 +1,14 @@
 # API principles
 
-* [Overview](#overview)
 * [Parameters](#parameters)
 * [HTTP verbs](#http-verbs)
 * [Responses](#responses)
     * [Generic/Shared](#generic-shared)
-        [User not signed in](#xxxx)
-        [Insufficient user rights](#xxxx)
-        [Not found](#xxxx)
-        [Bad Request](#xxxx)
-        [Internal Server Error](#xxxx)
+        * [User not signed in](#xxxx)
+        * [Insufficient user rights](#xxxx)
+        * [Not found](#xxxx)
+        * [Bad Request](#xxxx)
+        * [Internal Server Error](#xxxx)
     * [Get data](#xxxx)
         * [Data formats](#xxxx)
             * [Date and time](#xxxx)
@@ -30,22 +29,6 @@
         * [Delete single object](#xxxx)
 
 
-## Overview
-
-TODO.
-
-### H3 test
-
-test.
-
-#### H4 test
-
-test.
-
-##### H5 test
-
-test.
-
 ## Parameters
 
 Many API methods take optional parameters. For GET requests, any parameters not specified as a segment in the path can be passed as an HTTP query string parameter:
@@ -60,6 +43,7 @@ For POST, PATCH, and DELETE requests, parameters not included in the URL should 
 curl -X POST -H "Content-Type: application/json" -d '{"name":"Gert Jørgensen","title":"developer"}' https://shape.dk/api/v1/employees
 ```
 
+
 ## HTTP verbs
 
 Where possible our API's strives to use appropriate HTTP verbs for each action.
@@ -70,6 +54,69 @@ GET | Used for retrieving resources.
 POST | Used for creating resources.
 PATCH | Used for updating resources with partial JSON data. For instance, an Issue resource has title and body attributes. A PATCH request may accept one or more of the attributes to update the resource.
 DELETE | Used for deleting resources.
+
+
+## Responses
+
+
+### Generic/Shared
+
+#### User not signed in
+
+#### Insufficient user rights
+
+#### Not found
+
+#### Bad Request
+
+#### Internal Server Error
+
+
+### Get data
+
+#### Data formats
+
+##### Date and time
+
+##### Images
+
+#### Get single object
+
+#### Get multiple objects
+
+##### Pagination
+
+
+### Create data
+
+#### Create single object
+
+#### Required parameters missing
+
+#### Object validation failed
+
+#### Uploading images
+
+
+### Update data
+
+#### Update single object
+
+#### Required parameters missing
+
+#### Object validation failed
+
+
+### Delete data
+
+#### Delete single object
+
+
+
+
+
+
+
 
 ## Successful responses
 
