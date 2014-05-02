@@ -1,29 +1,33 @@
 # API principles
 
-* [Overview](#overview)
 * [Parameters](#parameters)
 * [HTTP verbs](#http-verbs)
-* [Successful responses](#successful-responses)
-* [Errors](#errors)
-* [Status codes](#status-codes)
-    * [200 ok](#200-ok)
-    * [201 created](#201-created)
-    * [204 no_content](#204-no_content)
-    * [400 params_missing](#400-params_missing)
-    * [401 unauthorized](#401-unauthorized)
-    * [403 forbidden](#403-forbidden)
-    * [404 not_found](#404-not_found)
-    * [500 exception](#500-exception)
-* [Authentication](#authentication)
-* [Date and time](#date-and-time)
-* [Attachments](#attachments)
-    * [Images](#images)
-* [File uploads](#file-uploads)
-* [Pagination](#pagination)
+* [Responses](#responses)
+    * [Generic/Shared](#genericshared)
+        * [User not signed in](#user-not-signed-in)
+        * [Insufficient user rights](#insufficient-user-rights)
+        * [Not found](#not-found)
+        * [Bad Request](#bad-request)
+        * [Internal Server Error](#internal-server-error)
+    * [Get data](#get-data)
+        * [Data formats](#data-formats)
+            * [Date and time](#date-and-time)
+            * [Images](#images)
+        * [Get single object](#get-single-object)
+        * [Get multiple objects](#get-multiple-objects)
+            * [Pagination](#pagination)
+    * [Create data](#create-data)
+        * [Create single object](#create-single-object)
+        * [Required parameters missing](#required-parameters-missing)
+        * [Object validation failed](#object-validation-failed)
+        * [Uploading images](#uploading-images)
+    * [Update data](#update-data)
+        * [Update single object](#update-single-object)
+        * [Required parameters missing](#required-parameters-missing-1)
+        * [Object validation failed](#object-validation-failed-1)
+    * [Delete data](#delete-data)
+        * [Delete single object](#delete-single-object)
 
-## Overview
-
-TODO.
 
 ## Parameters
 
@@ -39,6 +43,7 @@ For POST, PATCH, and DELETE requests, parameters not included in the URL should 
 curl -X POST -H "Content-Type: application/json" -d '{"name":"Gert Jørgensen","title":"developer"}' https://shape.dk/api/v1/employees
 ```
 
+
 ## HTTP verbs
 
 Where possible our API's strives to use appropriate HTTP verbs for each action.
@@ -50,163 +55,90 @@ POST | Used for creating resources.
 PATCH | Used for updating resources with partial JSON data. For instance, an Issue resource has title and body attributes. A PATCH request may accept one or more of the attributes to update the resource.
 DELETE | Used for deleting resources.
 
-## Successful responses
 
-Successful responses always returns JSON data in the following format:
+## Responses
+
+
+### Generic/Shared
+
+Generic responses can be encountered from any request to the API and the requester should therefore always be prepared to handle these responses.
+
+#### User not signed in
+
+Returns status: 401 Unauthorized
 
 ```JSON
 {
-  "status" : "success",
-  "data" : {
-    "_id" : 1,
-    "name" : "Gert Jørgensen",
-    "title" : "Developer"
-  },
-  "meta" : {
-    "url" : "https://shape.dk/api/v1/employees/1"
+  "status": "error",
+  "data": {
+    "message": "Unauthorized",
+    "error_code": "unauthorized"
   }
 }
 ```
 
-For multiple resources the response would be:
+#### Insufficient user rights
+
+Returns status: 403 Forbidden
 
 ```JSON
 {
-  "status" : "success",
-  "data" : [
-    {
-      "_id" : 1,
-      "name" : "Gert Jørgensen",
-      "title" : "Developer",
-      "meta" : {
-        "url" : "https://shape.dk/api/v1/employees/1"
-      }
-    },
-    {
-      "_id" : 2,
-      "name" : "Philip Bruce",
-      "title" : "Partner",
-      "meta" : {
-        "url" : "https://shape.dk/api/v1/employees/2"
-      }
-    }
-  ],
-  "meta" : {
-    "url" : "https://shape.dk/api/v1/employees"
+  "status": "error",
+  "data": {
+    "message": "User doesn't have rights to create employees",
+    "error_code": "forbidden"
   }
 }
 ```
 
-## Errors
+#### Not found
 
-Unsuccessful responses always returns JSON data in the following format:
-
-```JSON
-{
-  "status" : "error",
-  "data" : {
-    "error_code" : "unauthorized",
-    "message" : "Unauthorized"
-  }
-}
-```
-The possible error codes and their HTTP status are shown in the section: [Status codes](#status-codes).
-
-## Status codes
-
-### 200 ok
-
-Returned for successful GET requests.
-
-### 201 created
-
-Returned for successful POST requests that create new entities in the database.
-
-### 204 no_content
-
-Returned for successful PATCH and DELETE requests that update or delete entities in the database.
-
-### 400 params_missing
-
-Returned for unsuccessful POST and PATCH requests if mandatory parameters are missing.
-
-Example:
+Returns status: 404 Not Found
 
 ```JSON
 {
-  "status" : "error",
-  "data" : {
-    "error_code" : "param_missing",
-    "message" : "param not found: name"
+  "status": "error",
+  "data": {
+    "message": "Not Found",
+    "error_code": "not_found"
   }
 }
 ```
 
-### 401 unauthorized
+#### Bad Request
 
-Returned for any request with an invalid authentication token.
-
-Example:
+Returns status: 400 Bad Request
 
 ```JSON
 {
-  "status" : "error",
-  "data" : {
-    "error_code" : "unauthorized",
-    "message" : "Unauthorized"
+  "status": "error",
+  "data": {
+    "message": "Not specified",
+    "error_code": "not_specified"
   }
 }
 ```
 
-### 403 forbidden
+#### Internal Server Error
 
-Returned for any request that the user don't have permissions for.
-
-Example:
+Returns status: 500 Internal Server Error
 
 ```JSON
 {
-  "status" : "error",
-  "data" : {
-    "error_code" : "forbidden",
-    "message" : "User doesn't have rights to create employees"
+  "status": "error",
+  "data": {
+    "message": "Internal Server Error",
+    "error_code": "exception"
   }
 }
 ```
 
-### 404 not_found
 
-Returned for any request for which the entities was not found in the database.
+### Get data
 
-```JSON
-{
-  "status" : "error",
-  "data" : {
-    "error_code" : "not_found",
-    "message" : "Not found"
-  }
-}
-```
+#### Data formats
 
-### 500 exception
-
-Returned for any request for which the server encountered an unknown error.
-
-```JSON
-{
-  "status" : "error",
-  "data" : {
-    "error_code" : "exception",
-    "message" : "The server encountered an unknown error"
-  }
-}
-```
-
-## Authentication
-
-TODO.
-
-## Date and time
+##### Date and time
 
 All timestamps are returned in ISO 8601 format:
 
@@ -222,9 +154,7 @@ THH:MM:SSZ
 
 Timestamps are always saved and returned in UTC (GMT/Zulu)-time.
 
-## Attachments
-
-### Images
+##### Images
 
 Images are returned as an "image" entity including a "normal" and a "retina" version:
 
@@ -272,10 +202,157 @@ For multiple images the response would be:
 }
 ```
 
-## File uploads
+#### Get single object
+
+Returns status: 200 OK
+
+```JSON
+{
+  "status": "success",
+  "data": {
+    "_id": 1,
+    "body": "This is the body.",
+    "created_at": "2013-12-10T15:13:22Z"
+  }
+}
+```
+
+#### Get multiple objects
+
+Returns status: 200 OK
+
+```JSON
+{
+  "status": "success",
+  "data": [
+    {
+      "_id": 1,
+      "body": "This is the body.",
+      "created_at": "2013-12-10T15:13:22Z"
+    },
+    {
+      "_id": 2,
+      "body": "This is the second body.",
+      "created_at": "2014-12-10T15:13:22Z"
+    }
+  ]
+}
+```
+
+##### Pagination
+
+Pagination info is included in the meta part of the response if available.
+
+```JSON
+{
+  "status": "success",
+  "data": [ ... ],
+  "meta": {
+    "current_page": 1,
+    "total_page_count": 4,
+    "page_record_count": 10,
+    "total_record_count": 34,
+    "links": {
+      "next": "https://shape.dk/api/v1/employees/page/2",
+      "prev": null,
+      "last": "https://shape.dk/api/v1/employees/page/4",
+      "first": "https://shape.dk/api/v1/employees/page/1"
+    }
+  }
+}
+```
+
+### Create data
+
+#### Create single object
+
+Returns status: 201 Created
+
+```JSON
+{
+  "status": "success",
+  "data": {
+    "_id": 1,
+    "body": "This is the body.",
+    "created_at": "2013-12-10T15:13:22Z"
+  }
+}
+```
+
+#### Required parameters missing
+
+Returns status: 400 Bad Request
+
+```JSON
+{
+  "status": "error",
+  "data": {
+    "message": "Param not found: employee_title",
+    "error_code": "param_missing"
+  }
+}
+```
+
+#### Object validation failed
+
+Returns status: 422 Unprocessable Entity
+
+TODO: Update with example showing which parameters have invalid data and what the errors are.
+
+```JSON
+{
+  "status": "error",
+  "data": {
+    "message": "Invalid",
+    "error_code": "invalid"
+  }
+}
+```
+
+#### Uploading images
 
 TODO.
 
-## Pagination
+### Update data
 
-TODO.
+#### Update single object
+
+Returns status: 204 No Content
+
+#### Required parameters missing
+
+Returns status: 400 Bad Request
+
+```JSON
+{
+  "status": "error",
+  "data": {
+    "message": "Param not found: employee_title",
+    "error_code": "param_missing"
+  }
+}
+```
+
+#### Object validation failed
+
+Returns status: 422 Unprocessable Entity
+
+TODO: Update with example showing which parameters have invalid data and what the errors are.
+
+```JSON
+{
+  "status": "error",
+  "data": {
+    "message": "Invalid",
+    "error_code": "invalid"
+  }
+}
+```
+
+### Delete data
+
+#### Delete single object
+
+Returns status: 204 No Content
+
+
