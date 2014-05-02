@@ -85,7 +85,7 @@ Returns status: 403 Forbidden
 {
   "status": "error",
   "data": {
-    "message": "Forbidden",
+    "message": "User doesn't have rights to create employees",
     "error_code": "forbidden"
   }
 }
@@ -204,268 +204,155 @@ For multiple images the response would be:
 
 #### Get single object
 
+Returns status: 200 OK
+
+```JSON
+{
+  "status": "success",
+  "data": {
+    "_id": 1,
+    "body": "This is the body.",
+    "created_at": "2013-12-10T15:13:22Z"
+  }
+}
+```
+
 #### Get multiple objects
+
+Returns status: 200 OK
+
+```JSON
+{
+  "status": "success",
+  "data": [
+    {
+      "_id": 1,
+      "body": "This is the body.",
+      "created_at": "2013-12-10T15:13:22Z"
+    },
+    {
+      "_id": 2,
+      "body": "This is the second body.",
+      "created_at": "2014-12-10T15:13:22Z"
+    }
+  ]
+}
+```
 
 ##### Pagination
 
+Pagination info is included in the meta part of the response if available.
+
+```JSON
+{
+  "status": "success",
+  "data": [ ... ],
+  "meta": {
+    "current_page": 1,
+    "total_page_count": 4,
+    "page_record_count": 10,
+    "total_record_count": 34,
+    "links": {
+      "next": "https://shape.dk/api/v1/employees/page/2",
+      "prev": null,
+      "last": "https://shape.dk/api/v1/employees/page/4",
+      "first": "https://shape.dk/api/v1/employees/page/1"
+    }
+  }
+}
+```
 
 ### Create data
 
 #### Create single object
 
+Returns status: 201 Created
+
+```JSON
+{
+  "status": "success",
+  "data": {
+    "_id": 1,
+    "body": "This is the body.",
+    "created_at": "2013-12-10T15:13:22Z"
+  }
+}
+```
+
 #### Required parameters missing
+
+Returns status: 400 Bad Request
+
+```JSON
+{
+  "status": "error",
+  "data": {
+    "message": "Param not found: employee_title",
+    "error_code": "param_missing"
+  }
+}
+```
 
 #### Object validation failed
 
+Returns status: 422 Unprocessable Entity
+
+TODO: Update with example showing which parameters have invalid data and what the errors are.
+
+```JSON
+{
+  "status": "error",
+  "data": {
+    "message": "Invalid",
+    "error_code": "invalid"
+  }
+}
+```
+
 #### Uploading images
 
+TODO.
 
 ### Update data
 
 #### Update single object
 
+Returns status: 204 No Content
+
 #### Required parameters missing
+
+Returns status: 400 Bad Request
+
+```JSON
+{
+  "status": "error",
+  "data": {
+    "message": "Param not found: employee_title",
+    "error_code": "param_missing"
+  }
+}
+```
 
 #### Object validation failed
 
+Returns status: 422 Unprocessable Entity
+
+TODO: Update with example showing which parameters have invalid data and what the errors are.
+
+```JSON
+{
+  "status": "error",
+  "data": {
+    "message": "Invalid",
+    "error_code": "invalid"
+  }
+}
+```
 
 ### Delete data
 
 #### Delete single object
 
+Returns status: 204 No Content
 
 
-
-
-
-
-
-## Successful responses
-
-Successful responses always returns JSON data in the following format:
-
-```JSON
-{
-  "status" : "success",
-  "data" : {
-    "_id" : 1,
-    "name" : "Gert Jørgensen",
-    "title" : "Developer"
-  },
-  "meta" : {
-    "url" : "https://shape.dk/api/v1/employees/1"
-  }
-}
-```
-
-For multiple resources the response would be:
-
-```JSON
-{
-  "status" : "success",
-  "data" : [
-    {
-      "_id" : 1,
-      "name" : "Gert Jørgensen",
-      "title" : "Developer",
-      "meta" : {
-        "url" : "https://shape.dk/api/v1/employees/1"
-      }
-    },
-    {
-      "_id" : 2,
-      "name" : "Philip Bruce",
-      "title" : "Partner",
-      "meta" : {
-        "url" : "https://shape.dk/api/v1/employees/2"
-      }
-    }
-  ],
-  "meta" : {
-    "url" : "https://shape.dk/api/v1/employees"
-  }
-}
-```
-
-## Errors
-
-Unsuccessful responses always returns JSON data in the following format:
-
-```JSON
-{
-  "status" : "error",
-  "data" : {
-    "error_code" : "unauthorized",
-    "message" : "Unauthorized"
-  }
-}
-```
-The possible error codes and their HTTP status are shown in the section: [Status codes](#status-codes).
-
-## Status codes
-
-### 200 ok
-
-Returned for successful GET requests.
-
-### 201 created
-
-Returned for successful POST requests that create new entities in the database.
-
-### 204 no_content
-
-Returned for successful PATCH and DELETE requests that update or delete entities in the database.
-
-### 400 params_missing
-
-Returned for unsuccessful POST and PATCH requests if mandatory parameters are missing.
-
-Example:
-
-```JSON
-{
-  "status" : "error",
-  "data" : {
-    "error_code" : "param_missing",
-    "message" : "param not found: name"
-  }
-}
-```
-
-### 401 unauthorized
-
-Returned for any request with an invalid authentication token.
-
-Example:
-
-```JSON
-{
-  "status" : "error",
-  "data" : {
-    "error_code" : "unauthorized",
-    "message" : "Unauthorized"
-  }
-}
-```
-
-### 403 forbidden
-
-Returned for any request that the user don't have permissions for.
-
-Example:
-
-```JSON
-{
-  "status" : "error",
-  "data" : {
-    "error_code" : "forbidden",
-    "message" : "User doesn't have rights to create employees"
-  }
-}
-```
-
-### 404 not_found
-
-Returned for any request for which the entities was not found in the database.
-
-```JSON
-{
-  "status" : "error",
-  "data" : {
-    "error_code" : "not_found",
-    "message" : "Not found"
-  }
-}
-```
-
-### 500 exception
-
-Returned for any request for which the server encountered an unknown error.
-
-```JSON
-{
-  "status" : "error",
-  "data" : {
-    "error_code" : "exception",
-    "message" : "The server encountered an unknown error"
-  }
-}
-```
-
-## Authentication
-
-TODO.
-
-## Date and time
-
-All timestamps are returned in ISO 8601 format:
-
-```
-YYYY-MM-DDTHH:MM:SSZ
-```
-
-and time-only (without date):
-
-```
-THH:MM:SSZ
-```
-
-Timestamps are always saved and returned in UTC (GMT/Zulu)-time.
-
-## Attachments
-
-### Images
-
-Images are returned as an "image" entity including a "normal" and a "retina" version:
-
-```JSON
-{
-  "status" : "success",
-  "data" : {
-    "_id" : 1,
-    "name" : "Gert Jørgensen",
-    "title" : "Developer",
-    "image" : {
-      "normal" : "https://shape.dk/images/employees/gert.jpg",
-      "normal" : "https://shape.dk/images/employees/gert@2x.jpg"
-    }
-  },
-  "meta" : {
-    "url" : "https://shape.dk/api/v1/employees/1"
-  }
-}
-```
-
-For multiple images the response would be:
-
-```JSON
-{
-  "status" : "success",
-  "data" : {
-    "_id" : 1,
-    "name" : "Gert Jørgensen",
-    "title" : "Developer",
-    "images" : [
-      {
-        "normal" : "https://shape.dk/images/employees/gert.jpg",
-        "normal" : "https://shape.dk/images/employees/gert@2x.jpg"
-      },
-      {
-        "normal" : "https://shape.dk/images/employees/gert_alternative_.jpg",
-        "normal" : "https://shape.dk/images/employees/gert_alternative_@2x.jpg"
-      }
-    ]
-  },
-  "meta" : {
-    "url" : "https://shape.dk/api/v1/employees/1"
-  }
-}
-```
-
-## File uploads
-
-TODO.
-
-## Pagination
-
-TODO.
