@@ -3,7 +3,7 @@
 * [Parameters](#parameters)
 * [HTTP verbs](#http-verbs)
 * [Responses](#responses)
-    * [Generic/Shared](#generic-shared)
+    * [Generic/Shared](#genericshared)
         * [User not signed in](#user-not-signed-in)
         * [Insufficient user rights](#insufficient-user-rights)
         * [Not found](#not-found)
@@ -61,15 +61,53 @@ DELETE | Used for deleting resources.
 
 ### Generic/Shared
 
+Generic responses can be encountered from any request to the API and the requester should therefore always be prepared to handle these responses.
+
 #### User not signed in
+
+Returns status: 401 Unauthorized
+
+```JSON
+{
+  "status": "error",
+  "data": {
+    "message": "Unauthorized",
+    "error_code": "unauthorized"
+  }
+}
+```
 
 #### Insufficient user rights
 
+Returns status: XXXXX
+
+```JSON
+{}
+```
+
 #### Not found
+
+Returns status: XXXXX
+
+```JSON
+{}
+```
 
 #### Bad Request
 
+Returns status: XXXXX
+
+```JSON
+{}
+```
+
 #### Internal Server Error
+
+Returns status: XXXXX
+
+```JSON
+{}
+```
 
 
 ### Get data
@@ -78,7 +116,67 @@ DELETE | Used for deleting resources.
 
 ##### Date and time
 
+All timestamps are returned in ISO 8601 format:
+
+```
+YYYY-MM-DDTHH:MM:SSZ
+```
+
+and time-only (without date):
+
+```
+THH:MM:SSZ
+```
+
+Timestamps are always saved and returned in UTC (GMT/Zulu)-time.
+
 ##### Images
+
+Images are returned as an "image" entity including a "normal" and a "retina" version:
+
+```JSON
+{
+  "status" : "success",
+  "data" : {
+    "_id" : 1,
+    "name" : "Gert Jørgensen",
+    "title" : "Developer",
+    "image" : {
+      "normal" : "https://shape.dk/images/employees/gert.jpg",
+      "normal" : "https://shape.dk/images/employees/gert@2x.jpg"
+    }
+  },
+  "meta" : {
+    "url" : "https://shape.dk/api/v1/employees/1"
+  }
+}
+```
+
+For multiple images the response would be:
+
+```JSON
+{
+  "status" : "success",
+  "data" : {
+    "_id" : 1,
+    "name" : "Gert Jørgensen",
+    "title" : "Developer",
+    "images" : [
+      {
+        "normal" : "https://shape.dk/images/employees/gert.jpg",
+        "normal" : "https://shape.dk/images/employees/gert@2x.jpg"
+      },
+      {
+        "normal" : "https://shape.dk/images/employees/gert_alternative_.jpg",
+        "normal" : "https://shape.dk/images/employees/gert_alternative_@2x.jpg"
+      }
+    ]
+  },
+  "meta" : {
+    "url" : "https://shape.dk/api/v1/employees/1"
+  }
+}
+```
 
 #### Get single object
 
