@@ -297,8 +297,6 @@ Returns status: 400 Bad Request
 
 Returns status: 422 Unprocessable Entity
 
-TODO: Update with example showing which parameters have invalid data and what the errors are.
-
 ```JSON
 {
   "status": "error",
@@ -306,6 +304,25 @@ TODO: Update with example showing which parameters have invalid data and what th
     "message": "Invalid",
     "error_code": "invalid"
   }
+}
+```
+
+The "data" element can also sometimes include an "errors" object containing
+the name of the model who's validation failed and an array including the
+specific validation errors:
+
+```JSON
+{
+  "data": {
+    "error_code": "invalid",
+    "errors": {
+      "rating": [
+        "must be a number between 0 and 10"
+      ]
+    },
+    "message": "Invalid"
+  },
+  "status": "error"
 }
 ```
 
@@ -337,8 +354,6 @@ Returns status: 400 Bad Request
 
 Returns status: 422 Unprocessable Entity
 
-TODO: Update with example showing which parameters have invalid data and what the errors are.
-
 ```JSON
 {
   "status": "error",
@@ -346,6 +361,25 @@ TODO: Update with example showing which parameters have invalid data and what th
     "message": "Invalid",
     "error_code": "invalid"
   }
+}
+```
+
+The "data" element can also sometimes include an "errors" object containing
+the name of the model who's validation failed and an array including the
+specific validation errors:
+
+```JSON
+{
+  "data": {
+    "error_code": "invalid",
+    "errors": {
+      "rating": [
+        "must be a number between 0 and 10"
+      ]
+    },
+    "message": "Invalid"
+  },
+  "status": "error"
 }
 ```
 
